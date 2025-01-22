@@ -1,0 +1,49 @@
+﻿<h2>Weather Forecast</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Temperature (C)</th>
+            <th>Temperature (F)</th>
+            <th>Summary</th>
+        </tr>
+    </thead>
+    <tbody id="weatherTable"></tbody>
+</table>
+
+<script>
+    FetchWeatherData();
+
+    function FetchWeatherData() { // Fixed 'Function' to 'function'
+        const jwtToken = localStorage.getItem('token');
+
+        fetch('https://localhost:7239/weatherForecast', {
+            method: 'GET', // Fixed 'Get' to 'GET'
+            headers: {
+                'Authorization': `Bearer ${jwtToken}`, // Fixed string interpolation syntax
+                'Content-Type': 'application/json' // Fixed 'Application/json' to 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response is not ok');
+            }
+            return response.json(); // Fixed 'response.json' to 'response.json()'
+        })
+        .then(data => {
+            const table = document.getElementById('weatherTable');
+            table.innerHTML = ''; // Clear previous rows if any
+            data.forEach(forecast => {
+                const row = `<tr>
+                    <td>${forecast.date}</td>
+                    <td>${forecast.temperatureC}</td>
+                    <td>${forecast.temperatureF}</td>
+                    <td>${forecast.summary}</td>
+                </tr>`; // Fixed quotes and capitalization of 'summary'
+                table.innerHTML += row;
+            });
+        })
+        .catch(error => console.error('Error fetching weather data:', error)); // Fixed missing parenthesis
+    }
+</script>
